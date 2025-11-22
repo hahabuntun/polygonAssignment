@@ -30,7 +30,7 @@ class AppConfig:
     rpc: RpcConfig = field(default_factory=lambda: RpcConfig(
         urls=[url.strip() for url in os.getenv(
             "POLYGON_RPC_URLS",
-            "https://rpc.ankr.com/polygon,https://polygon-rpc.com,https://1rpc.io/matic"
+            "https://rpc.ankr.com/polygon,https://polygon-rpc.com,https://1rpc.io/matic,https://polygon-rpc.gateway.pokt.network,http://rpc-mainnet.maticvigil.com,http://matic-mainnet.chainstacklabs.com"
         ).split(",")]
     ))
     contract: ContractConfig = field(default_factory=lambda: ContractConfig(
