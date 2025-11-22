@@ -69,3 +69,7 @@ build/contracts/
 
 # macOS
 .DS_Store
+
+
+!abi/*.json
+!.env.example
