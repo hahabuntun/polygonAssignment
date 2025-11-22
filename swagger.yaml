@@ -1,0 +1,181 @@
+openapi: 3.0.3
+info:
+  title: Polygon Token API
+  description: API для работы с Polygon ERC20 токенами
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+paths:
+  /get_balance:
+    get:
+      summary: Получить баланс токена для адреса
+      parameters:
+        - in: query
+          name: address
+          schema:
+            type: string
+          required: true
+          description: Ethereum-адрес
+      responses:
+        "200":
+          description: Баланс адреса
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  address:
+                    type: string
+                  balance_wei:
+                    type: string
+                  balance_formatted:
+                    type: number
+                  success:
+                    type: boolean
+        "400":
+          description: Ошибка валидации адреса
+        "500":
+          description: Внутренняя ошибка сервера
+
+  /get_balance_batch:
+    post:
+      summary: Получить балансы токена для нескольких адресов
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                addresses:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        "200":
+          description: Список балансов
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balances:
+                    type: array
+                    items:
+                      type: object
+                  count:
+                    type: integer
+                  success:
+                    type: boolean
+        "400":
+          description: Ошибка валидации
+        "500":
+          description: Внутренняя ошибка сервера
+
+  /get_token_info:
+    get:
+      summary: Получить информацию о токене
+      responses:
+        "200":
+          description: Информация о токене
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  symbol:
+                    type: string
+                  name:
+                    type: string
+                  totalSupply:
+                    type: string
+                  totalSupply_formatted:
+                    type: number
+                  decimals:
+                    type: integer
+                  address:
+                    type: string
+                  success:
+                    type: boolean
+        "502":
+          description: Ошибка сервиса
+        "500":
+          description: Внутренняя ошибка сервера
+
+  /get_top:
+    get:
+      summary: Получить топ адресов по балансу
+      parameters:
+        - in: query
+          name: n
+          schema:
+            type: integer
+            default: 10
+          description: Количество адресов
+      responses:
+        "200":
+          description: Список топ адресов
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  top_holders:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                        balance:
+                          type: number
+                  count:
+                    type: integer
+                  requested_count:
+                    type: integer
+                  success:
+                    type: boolean
+        "400":
+          description: Ошибка параметра n
+        "500":
+          description: Внутренняя ошибка сервера
+
+  /get_top_with_transactions:
+    get:
+      summary: Получить топ адресов с датой последней транзакции
+      parameters:
+        - in: query
+          name: n
+          schema:
+            type: integer
+            default: 10
+          description: Количество адресов
+      responses:
+        "200":
+          description: Список топ адресов с датами последних транзакций
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  top_holders:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                        balance:
+                          type: number
+                        last_transaction_date:
+                          type: string
+                  count:
+                    type: integer
+                  requested_count:
+                    type: integer
+                  success:
+                    type: boolean
+        "400":
+          description: Ошибка параметра n
+        "500":
+          description: Внутренняя ошибка сервера
